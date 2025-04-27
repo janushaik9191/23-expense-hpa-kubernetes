@@ -6,10 +6,9 @@ metadata:
 spec:
   clusterIP: None # for headless service there is no cluster IP
   selector:
-    app: mysql
-    tier: database
     project: expense
-    environment: dev
+    component: mysql
+    tier: db
   ports:
   - protocol: TCP
     port: 3306 # service port

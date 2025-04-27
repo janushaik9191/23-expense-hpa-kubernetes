@@ -2,22 +2,21 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
+  namespace: expense
 spec:
   selector:
     matchLabels:
-      app: mysql
-      tier: database
       project: expense
-      environment: dev # has to match .spec.template.metadata.labels
-  serviceName: "mysql-headless"
-  replicas: 2 # by default is 1
+      component: mysql
+      tier: db
+  serviceName: "mysql-headless" # this is the headless service should be mentioned for statefulset
+  replicas: 2 # 
   template:
     metadata:
       labels:
-        app: mysql
-        tier: database
         project: expense
-        environment: dev
+        component: mysql
+        tier: db
     spec:
       containers:
       - name: mysql
@@ -25,12 +24,13 @@ spec:
         volumeMounts:
         - name: mysql
           mountPath: /var/lib/mysql
+  # This is PVC defnition, directly mentioned here
   volumeClaimTemplates:
   - metadata:
       name: mysql
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "mysql-ebs-sc"
+      storageClassName: "expense-ebs"
       resources:
         requests:
-          storage: 2Gi
+          storage: 1Gi
