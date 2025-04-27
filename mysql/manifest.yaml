@@ -12,10 +12,10 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-    app: mysql
-    tier: database
-    project: expense
-    environment: dev
+      app: mysql
+      tier: database
+      project: expense
+      environment: dev
   template:
     metadata:
       labels:
