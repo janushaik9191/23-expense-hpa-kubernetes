@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: meerjan/frontend:v1
+        image: joindevops/frontend:v1
 ---
 kind: Service
 apiVersion: v1
