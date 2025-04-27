@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend
+  namespace: expense
+data:
+  DB_HOST: mysql
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: expense
+  labels:
+    app: backend
+    tier: api
+    project: expense
+    environment: dev
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+      tier: api
+      project: expense
+      environment: dev
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: api
+        project: expense
+        environment: dev
+    spec:
+      containers:
+      - name: backend
+        image: meerjan/backend:v1
+        envFrom:
+        - configMapRef:
+            name: backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: expense
+spec:
+  selector:
+    app: backend
+    tier: api
+    project: expense
+    environment: dev
+  ports:
+  - name: backend-port
+    port: 8080 
+    protocol: TCP
+    targetPort: 8080
